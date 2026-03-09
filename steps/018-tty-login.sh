@@ -3,6 +3,11 @@ set -euo pipefail
 
 # Replace graphical login managers with the normal tty login on tty1
 # and install a custom /etc/issue header.
+#
+# This script is intentionally careful:
+# - It disables gdm/sddm for future boots
+# - It does not stop them live
+# - Package removal failures do not abort the whole step
 
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
@@ -27,25 +32,22 @@ echo "Disabling graphical display managers for future boots..."
 sudo systemctl disable gdm.service 2>/dev/null || true
 sudo systemctl disable sddm.service 2>/dev/null || true
 
-REMOVE_PKGS=()
-
+echo "Trying to remove gdm if installed..."
 if pacman -Q gdm >/dev/null 2>&1; then
-  REMOVE_PKGS+=("gdm")
-fi
-
-if pacman -Q sddm >/dev/null 2>&1; then
-  REMOVE_PKGS+=("sddm")
-fi
-
-if (( ${#REMOVE_PKGS[@]} > 0 )); then
-  echo "Removing packages: ${REMOVE_PKGS[*]}"
-  sudo pacman -Rns --noconfirm "${REMOVE_PKGS[@]}"
+  sudo pacman -R --noconfirm gdm || true
 else
-  echo "Neither gdm nor sddm is installed."
+  echo "gdm is not installed."
+fi
+
+echo "Trying to remove sddm if installed..."
+if pacman -Q sddm >/dev/null 2>&1; then
+  sudo pacman -R --noconfirm sddm || true
+else
+  echo "sddm is not installed."
 fi
 
 echo "Removing stale display-manager alias if present..."
-sudo rm -f /etc/systemd/system/display-manager.service
+sudo rm -f /etc/systemd/system/display-manager.service || true
 
 echo "Ensuring normal tty login on tty1 is enabled..."
 sudo systemctl unmask getty@tty1.service 2>/dev/null || true
@@ -74,6 +76,7 @@ ISSUEEOF
 
 echo
 echo "Done."
-echo "Normal tty login on tty1 is configured."
-echo "Reboot to use it:"
+echo "The normal tty login on tty1 is configured."
+echo "This change will apply after a reboot."
+echo "Reboot when you are ready:"
 echo "  systemctl reboot"
