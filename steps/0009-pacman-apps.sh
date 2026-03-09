@@ -27,6 +27,7 @@ main() {
     krita
     mako
     nano
+    niri
     neovim
     openbsd-netcat
     pavucontrol
