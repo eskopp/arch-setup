@@ -9,53 +9,31 @@ main() {
   local packages=(
     7zip
     alacritty
-    baobab
     brightnessctl
     btop
     chafa
     cliphist
-    decibels
-    epiphany
     fastfetch
-    file-roller
     firefox
     foot
     fzf
     gimp
     gimp-help-de
     gimp-help-en
-    gnome-calculator
-    gnome-calendar
-    gnome-clocks
-    gnome-connections
-    gnome-contacts
-    gnome-disk-utility
-    gnome-font-viewer
-    gnome-logs
-    gnome-maps
-    gnome-music
-    gnome-system-monitor
-    gnome-text-editor
-    gnome-tweaks
-    gnome-weather
     grim
     htop
     jq
     kitty
     krita
-    loupe
     mako
     nano
-    nautilus
     neovim
     openbsd-netcat
     pavucontrol
     playerctl
     rofi
-    simple-scan
     slurp
     smartmontools
-    snapshot
     swappy
     swayosd
     swww
