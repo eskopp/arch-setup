@@ -53,16 +53,22 @@ sudo systemctl enable getty@tty1.service
 
 echo "Writing custom /etc/issue..."
 sudo tee /etc/issue > /dev/null <<'ISSUEEOF'
-  _                _       
- | |    ___   __ _(_)_ __  
- | |   / _ \ / _` | | '_ \ 
+  _                _
+ | |    ___   __ _(_)_ __
+ | |   / _ \ / _` | | '_ \
  | |__| (_) | (_| | | | | |
  |_____\___/ \__, |_|_| |_|
-             |___/         
+             |___/
 
- Today is \d \t @ \n
+ Today is \d at \t on \n
  ----------------------------------------
- \r (\l)
+ os       : \S{PRETTY_NAME}
+ kernel   : \s \r
+ machine  : \m
+ tty      : \l
+ domain   : \o
+ network  : \4 / \6
+ ----------------------------------------
 
 ISSUEEOF
 
