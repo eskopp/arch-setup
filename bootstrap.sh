@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Repository settings
 REPO_URL="${REPO_URL:-https://github.com/eskopp/arch-setup.git}"
 REPO_BRANCH="${REPO_BRANCH:-main}"
 REPO_NAME="${REPO_NAME:-arch-setup}"
-TARGET_DIR="${TARGET_DIR:-$HOME/$REPO_NAME}"
+TARGET_DIR="${TARGET_DIR:-$HOME/git/$REPO_NAME}"
 INSTALL_SCRIPT="${INSTALL_SCRIPT:-install.sh}"
 
 msg() {
@@ -35,7 +34,6 @@ require_sudo() {
   msg "Requesting sudo access..."
   sudo -v
 
-  # Keep sudo alive while the script is running.
   while true; do
     sudo -n true
     sleep 60
@@ -84,7 +82,11 @@ clone_or_update_repo() {
 run_install() {
   local full_install_script="$TARGET_DIR/$INSTALL_SCRIPT"
 
-  [[ -f "$full_install_script" ]] || die "Install script not found: $full_install_script"
+  if [[ ! -f "$full_install_script" ]]; then
+    warn "Install script not found: $full_install_script"
+    warn "Repository was cloned successfully, but no installer is present yet."
+    return 0
+  fi
 
   msg "Starting installer..."
   cd "$TARGET_DIR"
