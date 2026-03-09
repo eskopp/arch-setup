@@ -9,10 +9,13 @@ main() {
   local packages=(
     7zip
     alacritty
+    bitwarden
     brightnessctl
     btop
     chafa
     cliphist
+    code
+    dbeaver
     fastfetch
     firefox
     foot
@@ -26,7 +29,10 @@ main() {
     kitty
     krita
     mako
+    mattermost-desktop
+    mullvad-vpn
     nano
+    nextcloud-client
     niri
     neovim
     openbsd-netcat
@@ -35,6 +41,7 @@ main() {
     rofi
     slurp
     smartmontools
+    spotify-launcher
     swappy
     swayosd
     swww
