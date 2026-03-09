@@ -1,0 +1,69 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Environment / secrets
+.env
+.env.*
+*.secret
+*.secrets
+*.key
+*.pem
+
+# Local config overrides
+local/
+config.local.*
+settings.local.*
+*.local.sh
+
+# Python virtual environments
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Build / generated files
+dist/
+build/
+out/
+
+# Test output
+coverage/
+.coverage
+pytest_cache/
+
+# Shell history / debug dumps
+*.history
+*.trace
+
+# Terraform / Ansible leftovers, if you ever add them
+.terraform/
+*.tfstate
+*.tfstate.*
+ansible.retry
+
+# Keep example env files tracked
+!.env.example
