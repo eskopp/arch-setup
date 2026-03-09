@@ -42,8 +42,11 @@ main() {
     "$HOME/.local/bin" \
     "$HOME/.local/src" \
     "$HOME/.config" \
+    "$HOME/.cache" \
     "$HOME/git" \
-    "$HOME/.cache"
+    "$HOME/.ssh"
+
+  chmod 700 "$HOME/.ssh"
 
   msg "0001 base setup completed"
 }
