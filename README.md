@@ -49,7 +49,13 @@ arch-setup/
 ├── install.sh
 ├── .gitignore
 ├── .gitattributes
-└── README.md
+├── LICENSE
+├── README.md
+└── steps/
+    ├── 0001-base.sh
+    ├── 0002-packages.sh
+    ├── 0003-services.sh
+    └── 0004-timeshift.sh
 ~~~
 
 ## Notes
@@ -60,4 +66,4 @@ arch-setup/
 
 ## License
 
-This project currently has no license.
+See `LICENSE` in the repository root.
