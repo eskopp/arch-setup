@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Enable Mullvad daemon on Arch Linux.
+# Enable Mullvad daemon and configure keyd side buttons on Arch Linux.
 
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
@@ -20,15 +20,42 @@ if ! command -v sudo >/dev/null 2>&1; then
   exit 1
 fi
 
+sudo -v
+
 if ! systemctl list-unit-files | grep -q '^mullvad-daemon.service'; then
   echo "mullvad-daemon.service was not found."
   echo "Please install Mullvad first."
   exit 1
 fi
 
+echo "Enabling Mullvad daemon..."
 sudo systemctl enable mullvad-daemon.service
 
+if ! command -v keyd >/dev/null 2>&1; then
+  echo "keyd is not installed."
+  echo "Please install keyd first."
+  exit 1
+fi
+
+echo "Writing keyd config for UGREEN side buttons..."
+sudo mkdir -p /etc/keyd
+
+sudo tee /etc/keyd/ugreen-sidebuttons.conf > /dev/null <<'KEYDEOF'
+[ids]
+k:2b89:0043:595906dd
+
+[meta]
+[ = A-left
+] = A-right
+KEYDEOF
+
+echo "Checking keyd config..."
+sudo keyd check
+
+echo "Reloading keyd..."
+sudo keyd reload
+
+echo
 echo "Done."
 echo "Mullvad daemon is enabled."
-echo "Start it now with:"
-echo "  sudo systemctl start mullvad-daemon.service"
+echo "UGREEN side buttons are configured through keyd."
