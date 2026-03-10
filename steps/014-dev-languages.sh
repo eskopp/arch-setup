@@ -68,6 +68,7 @@ PACKAGES=(
   hunspell
   hunspell-de
   hunspell-en_us
+  fzf
 )
 
 echo "Installing development and writing packages..."

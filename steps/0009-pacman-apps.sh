@@ -62,6 +62,9 @@ main() {
     zsh-autosuggestions
     zsh-history-substring-search
     zsh-syntax-highlighting
+    discord
+    gnupg
+    openssh
   )
 
   msg "Installing pacman applications from step 0009"
