@@ -50,9 +50,8 @@ main() {
   ensure_dependencies
 
   build_and_install_aur_pkg "paru-bin"
-  build_and_install_aur_pkg "yay-bin"
 
-  msg "0008 AUR helpers setup completed"
+  msg "0008 AUR helper setup completed"
 }
 
 main "$@"

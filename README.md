@@ -41,6 +41,20 @@ cd arch-setup
 bash install.sh
 ~~~
 
+## Running specific steps
+
+Run only selected steps:
+
+~~~bash
+bash install.sh 0001-base 0002-hyprland-base 0019-hyprland
+~~~
+
+Skip specific steps while running the default full flow:
+
+~~~bash
+SKIP_STEPS="0010-docker 0014-dev-languages" bash install.sh
+~~~
+
 ## Repository structure
 
 ~~~text
@@ -57,21 +71,21 @@ arch-setup/
 └── steps/
     ├── 0001-base.sh
     ├── 0002-hyprland-base.sh
-    ├── 0003-services.sh
     ├── 0004-timeshift.sh
     ├── 0005-peripherals.sh
     ├── 0006-cloud-and-repos.sh
     ├── 0007-pacman-initramfs-hook.sh
     ├── 0008-aur-helpers.sh
     ├── 0009-pacman-apps.sh
-    ├── 010-docker.sh
-    ├── 011-mullvad.sh
-    ├── 012-alacritty.sh
-    ├── 014-dev-languages.sh
-    ├── 016-random-wallpaper.sh
-    ├── 017-creative-tools.sh
-    ├── 018-tty-login.sh
-    ├── 019-hyprland.sh
+    ├── 0010-docker.sh
+    ├── 0011-mullvad.sh
+    ├── 0012-alacritty.sh
+    ├── 0014-dev-languages.sh
+    ├── 0016-random-wallpaper.sh
+    ├── 0017-creative-tools.sh
+    ├── 0019-hyprland.sh
+    ├── 0090-remove-gnome-and-niri.sh
+    ├── 0091-tty-login.sh
     ├── 098-dotfiles.sh
     └── 099-nixos-support.sh
 ~~~
@@ -81,7 +95,7 @@ arch-setup/
 - Run the scripts as a normal user, not as root.
 - `bootstrap.sh` expects `install.sh` in the repository root.
 - The scripts are intended for personal Arch Linux setup automation.
-- Later execution of the setup may remove installed GNOME and Niri packages.
+- The late cleanup and tty steps are intentionally destructive and should be run consciously.
 
 ## License
 
