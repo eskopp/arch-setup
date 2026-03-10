@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure nord-background exists, create an swww random wallpaper helper,
+# Ensure wallpaper exists, create an swww random wallpaper helper,
 # and hook it into Hyprland startup when the config exists.
 
 if [[ -r /etc/os-release ]]; then
@@ -39,8 +39,8 @@ run_for_target() {
   fi
 }
 
-WALLPAPER_REPO="https://github.com/eskopp/nord-background"
-WALLPAPER_DIR="${TARGET_HOME}/git/nord-background"
+WALLPAPER_REPO="https://github.com/eskopp/wallpaper"
+WALLPAPER_DIR="${TARGET_HOME}/git/wallpaper"
 RANDOMIZER_SCRIPT="${TARGET_HOME}/.local/bin/polarway-wallpaper-random"
 HYPR_CONFIG="${TARGET_HOME}/.config/hypr/hyprland.conf"
 
@@ -70,7 +70,7 @@ cat > "${TMP_SCRIPT}" <<'INNER_EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-WALLPAPER_DIR="${HOME}/git/nord-background"
+WALLPAPER_DIR="${HOME}/git/wallpaper"
 
 if [[ ! -d "${WALLPAPER_DIR}" ]]; then
   exit 0
