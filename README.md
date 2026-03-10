@@ -46,7 +46,7 @@ bash install.sh
 Run only selected steps:
 
 ~~~bash
-bash install.sh 0001-base 0002-hyprland-base 0019-hyprland
+bash install.sh 0000-preflight 0001-base 0002-hyprland-base 0019-hyprland
 ~~~
 
 Skip specific steps while running the default full flow:
@@ -54,6 +54,22 @@ Skip specific steps while running the default full flow:
 ~~~bash
 SKIP_STEPS="0010-docker 0014-dev-languages" bash install.sh
 ~~~
+
+## Logging and summary
+
+Each installer run writes a log file under:
+
+~~~text
+~/.local/state/arch-setup/logs/
+~~~
+
+At the end of the run, the installer prints a summary with:
+
+- overall status
+- log file path
+- ran steps
+- skipped steps
+- failed steps
 
 ## Repository structure
 
@@ -67,8 +83,10 @@ arch-setup/
 ├── README.md
 ├── .github/
 │   └── workflows/
-│       └── gitlab.yml
+│       ├── gitlab.yml
+│       └── shell-lint.yml
 └── steps/
+    ├── 0000-preflight.sh
     ├── 0001-base.sh
     ├── 0002-hyprland-base.sh
     ├── 0004-timeshift.sh
@@ -76,13 +94,16 @@ arch-setup/
     ├── 0006-cloud-and-repos.sh
     ├── 0007-pacman-initramfs-hook.sh
     ├── 0008-aur-helpers.sh
-    ├── 0009-pacman-apps.sh
+    ├── 0009-cli-apps.sh
     ├── 0010-docker.sh
     ├── 0011-mullvad.sh
     ├── 0012-alacritty.sh
+    ├── 0013-desktop-apps.sh
     ├── 0014-dev-languages.sh
+    ├── 0015-communication-apps.sh
     ├── 0016-random-wallpaper.sh
     ├── 0017-creative-tools.sh
+    ├── 0018-wayland-extras.sh
     ├── 0019-hyprland.sh
     ├── 0090-remove-gnome-and-niri.sh
     ├── 0091-tty-login.sh
@@ -95,7 +116,7 @@ arch-setup/
 - Run the scripts as a normal user, not as root.
 - `bootstrap.sh` expects `install.sh` in the repository root.
 - The scripts are intended for personal Arch Linux setup automation.
-- The late cleanup and tty steps are intentionally destructive and should be run consciously.
+- `0090-remove-gnome-and-niri.sh` and `0091-tty-login.sh` are intentionally destructive and print warnings before they run.
 
 ## License
 

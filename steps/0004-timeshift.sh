@@ -10,8 +10,14 @@ die() {
   exit 1
 }
 
+snapshot_exists() {
+  local comment="$1"
+  sudo timeshift --list 2>/dev/null | grep -Fq "$comment"
+}
+
 main() {
   local root_fstype root_subvol home_subvol root_uuid
+  local initial_comment="initial btrfs snapshot with @home"
 
   root_fstype="$(findmnt -no FSTYPE /)"
   root_subvol="$(findmnt -no OPTIONS / | tr ',' '\n' | sed -n 's/^subvol=//p')"
@@ -59,8 +65,12 @@ main() {
 }
 JSON
 
-  msg "Creating initial Timeshift snapshot"
-  sudo timeshift --btrfs --create --comments "initial btrfs snapshot with @home" --tags O
+  if snapshot_exists "$initial_comment"; then
+    msg "Initial Timeshift snapshot already exists, skipping creation"
+  else
+    msg "Creating initial Timeshift snapshot"
+    sudo timeshift --btrfs --create --comments "$initial_comment" --tags O
+  fi
 
   msg "Listing snapshots"
   sudo timeshift --list
