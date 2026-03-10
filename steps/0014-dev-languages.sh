@@ -27,7 +27,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
@@ -75,9 +75,9 @@ PACKAGES=(
 echo "Installing development and writing packages..."
 sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
 
-if command -v rustup >/dev/null 2>&1; then
+if command -v rustup > /dev/null 2>&1; then
   echo "Ensuring Rust stable toolchain is initialized..."
-  if ! run_for_target env HOME="${TARGET_HOME}" rustup show active-toolchain >/dev/null 2>&1; then
+  if ! run_for_target env HOME="${TARGET_HOME}" rustup show active-toolchain > /dev/null 2>&1; then
     run_for_target env HOME="${TARGET_HOME}" rustup default stable
   fi
 fi
@@ -89,7 +89,7 @@ LATEX_TEMPLATE="${TARGET_HOME}/Templates/latex-a4.tex"
 TYPST_TEMPLATE="${TARGET_HOME}/Templates/typst-a4.typ"
 
 if [[ ! -f "${LATEX_TEMPLATE}" ]]; then
-  cat > /tmp/latex-a4.tex <<'LATEXEOF'
+  cat > /tmp/latex-a4.tex << 'LATEXEOF'
 \documentclass[a4paper,11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -114,7 +114,7 @@ LATEXEOF
 fi
 
 if [[ ! -f "${TYPST_TEMPLATE}" ]]; then
-  cat > /tmp/typst-a4.typ <<'TYPSTEOF'
+  cat > /tmp/typst-a4.typ << 'TYPSTEOF'
 #set page(
   paper: "a4",
   margin: 2.5cm,

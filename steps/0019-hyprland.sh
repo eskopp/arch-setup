@@ -16,7 +16,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi

@@ -20,7 +20,7 @@ main() {
 
   [[ -f /etc/arch-release ]] || die "This setup only supports Arch Linux."
   [[ "${EUID}" -ne 0 ]] || die "Run this setup as a normal user, not as root."
-  command -v sudo >/dev/null 2>&1 || die "sudo is required but not installed."
+  command -v sudo > /dev/null 2>&1 || die "sudo is required but not installed."
 
   target_user="${SUDO_USER:-$USER}"
   target_home="$(getent passwd "${target_user}" | cut -d: -f6)"
@@ -28,16 +28,16 @@ main() {
 
   msg "Running preflight checks"
 
-  root_fstype="$(findmnt -no FSTYPE / 2>/dev/null || printf 'unknown')"
-  root_opts="$(findmnt -no OPTIONS / 2>/dev/null || true)"
-  home_opts="$(findmnt -no OPTIONS /home 2>/dev/null || true)"
+  root_fstype="$(findmnt -no FSTYPE / 2> /dev/null || printf 'unknown')"
+  root_opts="$(findmnt -no OPTIONS / 2> /dev/null || true)"
+  home_opts="$(findmnt -no OPTIONS /home 2> /dev/null || true)"
 
   if [[ -n "$root_opts" ]]; then
-    root_subvol="$(tr ',' '\n' <<<"$root_opts" | sed -n 's/^subvol=//p' | head -n1)"
+    root_subvol="$(tr ',' '\n' <<< "$root_opts" | sed -n 's/^subvol=//p' | head -n1)"
   fi
 
   if [[ -n "$home_opts" ]]; then
-    home_subvol="$(tr ',' '\n' <<<"$home_opts" | sed -n 's/^subvol=//p' | head -n1)"
+    home_subvol="$(tr ',' '\n' <<< "$home_opts" | sed -n 's/^subvol=//p' | head -n1)"
   fi
 
   msg "Root filesystem type: ${root_fstype}"
@@ -54,17 +54,17 @@ main() {
     warn "Home subvolume is '${home_subvol}', not '@home'. The Timeshift step may fail later."
   fi
 
-  if getent hosts github.com >/dev/null 2>&1; then
+  if getent hosts github.com > /dev/null 2>&1; then
     msg "DNS lookup for github.com succeeded"
   else
     warn "DNS lookup for github.com failed. Network access may not be ready."
   fi
 
-  if systemctl is-enabled gdm.service >/dev/null 2>&1; then
+  if systemctl is-enabled gdm.service > /dev/null 2>&1; then
     warn "gdm.service is enabled. Plan the cleanup step carefully."
   fi
 
-  if systemctl is-enabled sddm.service >/dev/null 2>&1; then
+  if systemctl is-enabled sddm.service > /dev/null 2>&1; then
     warn "sddm.service is enabled. Plan the cleanup step carefully."
   fi
 

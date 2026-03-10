@@ -29,20 +29,20 @@ main() {
   [[ -n "${target_home}" && -d "${target_home}" ]] || die "Could not determine home directory for ${target_user}."
 
   msg "Disabling graphical display managers for future boots when present"
-  sudo systemctl disable gdm.service 2>/dev/null || true
-  sudo systemctl disable sddm.service 2>/dev/null || true
-  sudo rm -f /etc/systemd/system/display-manager.service 2>/dev/null || true
+  sudo systemctl disable gdm.service 2> /dev/null || true
+  sudo systemctl disable sddm.service 2> /dev/null || true
+  sudo rm -f /etc/systemd/system/display-manager.service 2> /dev/null || true
 
-  if pacman -Sgq gnome >/dev/null 2>&1; then
+  if pacman -Sgq gnome > /dev/null 2>&1; then
     while IFS= read -r pkg; do
       [[ -n "${pkg}" ]] && group_pkgs+=("${pkg}")
-    done < <(pacman -Qqg gnome 2>/dev/null || true)
+    done < <(pacman -Qqg gnome 2> /dev/null || true)
   fi
 
-  if pacman -Sgq gnome-extra >/dev/null 2>&1; then
+  if pacman -Sgq gnome-extra > /dev/null 2>&1; then
     while IFS= read -r pkg; do
       [[ -n "${pkg}" ]] && group_pkgs+=("${pkg}")
-    done < <(pacman -Qqg gnome-extra 2>/dev/null || true)
+    done < <(pacman -Qqg gnome-extra 2> /dev/null || true)
   fi
 
   extra_pkgs=(
@@ -59,12 +59,12 @@ main() {
   )
 
   for pkg in "${group_pkgs[@]}" "${extra_pkgs[@]}"; do
-    if pacman -Q "${pkg}" >/dev/null 2>&1; then
+    if pacman -Q "${pkg}" > /dev/null 2>&1; then
       installed_pkgs+=("${pkg}")
     fi
   done
 
-  if (( ${#installed_pkgs[@]} > 0 )); then
+  if ((${#installed_pkgs[@]} > 0)); then
     mapfile -t remove_pkgs < <(printf '%s\n' "${installed_pkgs[@]}" | awk '!seen[$0]++')
     msg "Removing GNOME and Niri packages"
     sudo pacman -Rns --noconfirm "${remove_pkgs[@]}"
@@ -74,12 +74,12 @@ main() {
 
   msg "Removing leftover GNOME and Niri user files"
   rm -rf "${target_home}/.config/niri"
-  rm -f "${target_home}/.config/autostart/"*wallpaper*.desktop 2>/dev/null || true
-  rm -f "${target_home}/.local/bin/gnome-random-wallpaper.sh" 2>/dev/null || true
+  rm -f "${target_home}/.config/autostart/"*wallpaper*.desktop 2> /dev/null || true
+  rm -f "${target_home}/.local/bin/gnome-random-wallpaper.sh" 2> /dev/null || true
 
   msg "Removing leftover GNOME system configuration"
   sudo rm -f /etc/dconf/db/local.d/00-gnome
-  sudo dconf update 2>/dev/null || true
+  sudo dconf update 2> /dev/null || true
 
   msg "0090 GNOME and Niri cleanup completed"
   warn "Run this step only when you are ready to remove GNOME and Niri from the machine."

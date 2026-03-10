@@ -50,13 +50,13 @@ else
   echo "Missing    : /etc/nixos/hardware-configuration.nix"
 fi
 
-if command -v nix >/dev/null 2>&1; then
+if command -v nix > /dev/null 2>&1; then
   echo "Tool       : nix available"
 else
   echo "Tool       : nix missing"
 fi
 
-if command -v nixos-rebuild >/dev/null 2>&1; then
+if command -v nixos-rebuild > /dev/null 2>&1; then
   echo "Tool       : nixos-rebuild available"
 else
   echo "Tool       : nixos-rebuild missing"

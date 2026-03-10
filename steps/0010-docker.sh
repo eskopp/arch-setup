@@ -19,7 +19,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
@@ -35,7 +35,7 @@ sudo pacman -S --needed --noconfirm \
   docker-buildx
 
 echo "Ensuring docker group exists..."
-if ! getent group docker >/dev/null 2>&1; then
+if ! getent group docker > /dev/null 2>&1; then
   sudo groupadd docker
 fi
 

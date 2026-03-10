@@ -29,7 +29,7 @@ require_not_root() {
 }
 
 require_sudo() {
-  command -v sudo >/dev/null 2>&1 || die "sudo is required but not installed."
+  command -v sudo > /dev/null 2>&1 || die "sudo is required but not installed."
 
   msg "Requesting sudo access..."
   sudo -v
@@ -37,14 +37,14 @@ require_sudo() {
   while true; do
     sudo -n true
     sleep 60
-    kill -0 "$$" >/dev/null 2>&1 || exit 0
-  done 2>/dev/null &
+    kill -0 "$$" > /dev/null 2>&1 || exit 0
+  done 2> /dev/null &
   SUDO_KEEPALIVE_PID=$!
   trap 'kill "${SUDO_KEEPALIVE_PID}" >/dev/null 2>&1 || true' EXIT
 }
 
 ensure_git() {
-  if command -v git >/dev/null 2>&1; then
+  if command -v git > /dev/null 2>&1; then
     return 0
   fi
 
@@ -71,7 +71,7 @@ clone_or_update_repo() {
     return 0
   fi
 
-  if [[ -e "$TARGET_DIR" ]] && [[ -n "$(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 2>/dev/null)" ]]; then
+  if [[ -e "$TARGET_DIR" ]] && [[ -n "$(find "$TARGET_DIR" -mindepth 1 -maxdepth 1 2> /dev/null)" ]]; then
     die "Target directory $TARGET_DIR already exists and is not an empty git repository."
   fi
 

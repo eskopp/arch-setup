@@ -37,8 +37,8 @@ ensure_link() {
 
   if [[ -L "$link_path" ]]; then
     local current_target expected_target
-    current_target="$(readlink -f "$link_path" 2>/dev/null || true)"
-    expected_target="$(readlink -f "$target" 2>/dev/null || true)"
+    current_target="$(readlink -f "$link_path" 2> /dev/null || true)"
+    expected_target="$(readlink -f "$target" 2> /dev/null || true)"
 
     if [[ "$current_target" == "$expected_target" ]]; then
       msg "Symlink already correct: $link_path -> $target"
@@ -73,7 +73,7 @@ clone_or_update_repo() {
   local clone_url="$2"
   local target_dir="$GIT_ROOT/$repo_name"
 
-  if [[ "$(realpath "$target_dir" 2>/dev/null || true)" == "$(realpath "$REPO_ROOT")" ]]; then
+  if [[ "$(realpath "$target_dir" 2> /dev/null || true)" == "$(realpath "$REPO_ROOT")" ]]; then
     msg "Skipping current repository: $repo_name"
     return 0
   fi

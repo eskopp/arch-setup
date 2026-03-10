@@ -17,7 +17,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
@@ -67,7 +67,7 @@ echo "Creating wallpaper randomizer script..."
 run_for_target mkdir -p "${TARGET_HOME}/.local/bin"
 
 TMP_SCRIPT="$(mktemp)"
-cat > "${TMP_SCRIPT}" <<'INNER_EOF'
+cat > "${TMP_SCRIPT}" << 'INNER_EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 

@@ -43,8 +43,8 @@ main() {
     '[Login]' \
     'HandleLidSwitch=poweroff' \
     'HandleLidSwitchExternalPower=poweroff' \
-    'HandleLidSwitchDocked=poweroff' \
-    | sudo tee /etc/systemd/logind.conf.d/80-lid-poweroff.conf >/dev/null
+    'HandleLidSwitchDocked=poweroff' |
+    sudo tee /etc/systemd/logind.conf.d/80-lid-poweroff.conf > /dev/null
 
   msg "Setting Firefox as default browser for the current user"
   mkdir -p "${target_home}/.config"
@@ -54,7 +54,7 @@ main() {
   run_for_target "${target_user}" xdg-mime default firefox.desktop text/html || true
   run_for_target "${target_user}" xdg-mime default firefox.desktop application/xhtml+xml || true
 
-  if command -v xdg-settings >/dev/null 2>&1; then
+  if command -v xdg-settings > /dev/null 2>&1; then
     run_for_target "${target_user}" xdg-settings set default-web-browser firefox.desktop || true
   fi
 

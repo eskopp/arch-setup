@@ -12,7 +12,7 @@ die() {
 
 snapshot_exists() {
   local comment="$1"
-  sudo timeshift --list 2>/dev/null | grep -Fq "$comment"
+  sudo timeshift --list 2> /dev/null | grep -Fq "$comment"
 }
 
 main() {
@@ -37,7 +37,7 @@ main() {
   msg "Writing Timeshift configuration"
   sudo install -d -m 755 /etc/timeshift
 
-  sudo tee /etc/timeshift/timeshift.json >/dev/null <<JSON
+  sudo tee /etc/timeshift/timeshift.json > /dev/null << JSON
 {
   "backup_device_uuid" : "$root_uuid",
   "parent_device_uuid" : "",

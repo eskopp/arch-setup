@@ -22,7 +22,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
@@ -30,18 +30,18 @@ fi
 sudo -v
 
 echo "Disabling graphical display managers for future boots..."
-sudo systemctl disable gdm.service 2>/dev/null || true
-sudo systemctl disable sddm.service 2>/dev/null || true
+sudo systemctl disable gdm.service 2> /dev/null || true
+sudo systemctl disable sddm.service 2> /dev/null || true
 
 echo "Trying to remove gdm if installed..."
-if pacman -Q gdm >/dev/null 2>&1; then
+if pacman -Q gdm > /dev/null 2>&1; then
   sudo pacman -R --noconfirm gdm || true
 else
   echo "gdm is not installed."
 fi
 
 echo "Trying to remove sddm if installed..."
-if pacman -Q sddm >/dev/null 2>&1; then
+if pacman -Q sddm > /dev/null 2>&1; then
   sudo pacman -R --noconfirm sddm || true
 else
   echo "sddm is not installed."
@@ -51,11 +51,11 @@ echo "Removing stale display-manager alias if present..."
 sudo rm -f /etc/systemd/system/display-manager.service || true
 
 echo "Ensuring normal tty login on tty1 is enabled..."
-sudo systemctl unmask getty@tty1.service 2>/dev/null || true
+sudo systemctl unmask getty@tty1.service 2> /dev/null || true
 sudo systemctl enable getty@tty1.service
 
 echo "Writing custom /etc/issue..."
-sudo tee /etc/issue > /dev/null <<'ISSUEEOF'
+sudo tee /etc/issue > /dev/null << 'ISSUEEOF'
   _                _
  | |    ___   __ _(_)_ __
  | |   / _ \ / _` | | '_ \

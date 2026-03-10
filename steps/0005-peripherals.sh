@@ -7,7 +7,7 @@ msg() {
 
 snapshot_exists() {
   local comment="$1"
-  sudo timeshift --list 2>/dev/null | grep -Fq "$comment"
+  sudo timeshift --list 2> /dev/null | grep -Fq "$comment"
 }
 
 main() {
@@ -54,7 +54,7 @@ main() {
   systemctl --user enable --now pipewire-pulse.socket
   systemctl --user enable --now wireplumber.service
 
-  if command -v timeshift >/dev/null 2>&1; then
+  if command -v timeshift > /dev/null 2>&1; then
     if snapshot_exists "$snapshot_comment"; then
       msg "Peripherals snapshot already exists, skipping creation"
     else

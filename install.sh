@@ -57,7 +57,7 @@ print_summary() {
 
   echo
   msg "Install summary"
-  printf '  Status: %s\n' "$( [[ "$status" -eq 0 ]] && printf 'success' || printf 'failed' )"
+  printf '  Status: %s\n' "$([[ "$status" -eq 0 ]] && printf 'success' || printf 'failed')"
   printf '  Log file: %s\n' "$LOG_FILE"
   print_step_list "Ran steps" "${RAN_STEPS[@]}"
   print_step_list "Skipped steps" "${SKIPPED_STEPS[@]}"
@@ -84,7 +84,7 @@ on_exit() {
 trap 'on_exit "$?"' EXIT
 
 require_sudo_session() {
-  command -v sudo >/dev/null 2>&1 || die "sudo is required but not installed."
+  command -v sudo > /dev/null 2>&1 || die "sudo is required but not installed."
 
   msg "Requesting sudo access..."
   sudo -v
@@ -92,8 +92,8 @@ require_sudo_session() {
   while true; do
     sudo -n true
     sleep 60
-    kill -0 "$$" >/dev/null 2>&1 || exit 0
-  done 2>/dev/null &
+    kill -0 "$$" > /dev/null 2>&1 || exit 0
+  done 2> /dev/null &
   SUDO_KEEPALIVE_PID=$!
   trap 'kill "${SUDO_KEEPALIVE_PID}" >/dev/null 2>&1 || true' EXIT
 }

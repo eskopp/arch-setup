@@ -9,7 +9,7 @@ main() {
   msg "Creating custom pacman hook for initramfs rebuilds"
   sudo install -d -m 755 /etc/pacman.d/hooks
 
-  sudo tee /etc/pacman.d/hooks/95-mkinitcpio-extra.hook >/dev/null <<'HOOK'
+  sudo tee /etc/pacman.d/hooks/95-mkinitcpio-extra.hook > /dev/null << 'HOOK'
 [Trigger]
 Operation = Install
 Operation = Upgrade

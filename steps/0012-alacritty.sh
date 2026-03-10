@@ -18,7 +18,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
@@ -37,7 +37,7 @@ echo "Installing Alacritty..."
 sudo pacman -S --needed --noconfirm alacritty
 
 echo "Removing GNOME Console if installed..."
-if pacman -Q gnome-console >/dev/null 2>&1; then
+if pacman -Q gnome-console > /dev/null 2>&1; then
   sudo pacman -Rns --noconfirm gnome-console
 else
   echo "gnome-console is not installed."
@@ -46,7 +46,7 @@ fi
 echo "Creating GNOME launcher alias for Alacritty..."
 install -d -m 755 "${TARGET_HOME}/.local/share/applications"
 
-cat > "${TARGET_HOME}/.local/share/applications/alacritty-console.desktop" <<'DESKTOPEOF'
+cat > "${TARGET_HOME}/.local/share/applications/alacritty-console.desktop" << 'DESKTOPEOF'
 [Desktop Entry]
 Type=Application
 Version=1.0

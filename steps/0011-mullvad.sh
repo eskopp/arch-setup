@@ -16,7 +16,7 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo >/dev/null 2>&1; then
+if ! command -v sudo > /dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
@@ -32,7 +32,7 @@ fi
 echo "Enabling Mullvad daemon..."
 sudo systemctl enable mullvad-daemon.service
 
-if ! command -v keyd >/dev/null 2>&1; then
+if ! command -v keyd > /dev/null 2>&1; then
   echo "keyd is not installed."
   echo "Please install keyd first."
   exit 1
@@ -41,7 +41,7 @@ fi
 echo "Writing keyd config for UGREEN side buttons..."
 sudo mkdir -p /etc/keyd
 
-sudo tee /etc/keyd/ugreen-sidebuttons.conf > /dev/null <<'KEYDEOF'
+sudo tee /etc/keyd/ugreen-sidebuttons.conf > /dev/null << 'KEYDEOF'
 [ids]
 k:2b89:0043:595906dd
 
