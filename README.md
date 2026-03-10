@@ -51,11 +51,31 @@ arch-setup/
 ├── .gitattributes
 ├── LICENSE
 ├── README.md
+├── .github/
+│   └── workflows/
+│       └── gitlab.yml
 └── steps/
     ├── 0001-base.sh
-    ├── 0002-packages.sh
+    ├── 0002-gnome-base.sh
     ├── 0003-services.sh
-    └── 0004-timeshift.sh
+    ├── 0004-timeshift.sh
+    ├── 0005-peripherals.sh
+    ├── 0006-cloud-and-repos.sh
+    ├── 0007-pacman-initramfs-hook.sh
+    ├── 0008-aur-helpers.sh
+    ├── 0009-pacman-apps.sh
+    ├── 010-docker.sh
+    ├── 011-mullvad.sh
+    ├── 012-alacritty.sh
+    ├── 013-gnome-random-wallpaper.sh
+    ├── 014-dev-languages.sh
+    ├── 015-niri-base.sh
+    ├── 016-random-wallpaper.sh
+    ├── 017-creative-tools.sh
+    ├── 018-tty-login.sh
+    ├── 019-hyprland.sh
+    ├── 098-dotfiles.sh
+    └── 099-nixos-support.sh
 ~~~
 
 ## Notes

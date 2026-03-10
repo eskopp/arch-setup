@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-echo "[INFO] 0002-packages.sh"
+echo "[INFO] 0002-gnome-base.sh"
 
 # Install required packages for GNOME base behavior
 sudo pacman -S --needed --noconfirm networkmanager firefox xdg-utils
