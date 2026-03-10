@@ -56,7 +56,7 @@ arch-setup/
 │       └── gitlab.yml
 └── steps/
     ├── 0001-base.sh
-    ├── 0002-gnome-base.sh
+    ├── 0002-hyprland-base.sh
     ├── 0003-services.sh
     ├── 0004-timeshift.sh
     ├── 0005-peripherals.sh
@@ -67,9 +67,7 @@ arch-setup/
     ├── 010-docker.sh
     ├── 011-mullvad.sh
     ├── 012-alacritty.sh
-    ├── 013-gnome-random-wallpaper.sh
     ├── 014-dev-languages.sh
-    ├── 015-niri-base.sh
     ├── 016-random-wallpaper.sh
     ├── 017-creative-tools.sh
     ├── 018-tty-login.sh
@@ -83,6 +81,7 @@ arch-setup/
 - Run the scripts as a normal user, not as root.
 - `bootstrap.sh` expects `install.sh` in the repository root.
 - The scripts are intended for personal Arch Linux setup automation.
+- Later execution of the setup may remove installed GNOME and Niri packages.
 
 ## License
 

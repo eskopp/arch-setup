@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Ensure nord-background exists, create an swww random wallpaper helper,
-# and hook it into Niri and Hyprland startup when their configs exist.
+# and hook it into Hyprland startup when the config exists.
 
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
@@ -42,7 +42,6 @@ run_for_target() {
 WALLPAPER_REPO="https://github.com/eskopp/nord-background"
 WALLPAPER_DIR="${TARGET_HOME}/git/nord-background"
 RANDOMIZER_SCRIPT="${TARGET_HOME}/.local/bin/polarway-wallpaper-random"
-NIRI_CONFIG="${TARGET_HOME}/.config/niri/config.kdl"
 HYPR_CONFIG="${TARGET_HOME}/.config/hypr/hyprland.conf"
 
 echo "Installing required packages..."
@@ -67,7 +66,7 @@ echo "Creating wallpaper randomizer script..."
 run_for_target mkdir -p "${TARGET_HOME}/.local/bin"
 
 TMP_SCRIPT="$(mktemp)"
-cat > "${TMP_SCRIPT}" <<'SCRIPTEOF'
+cat > "${TMP_SCRIPT}" <<'INNER_EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -102,7 +101,7 @@ fi
 swww img "${SELECTED}" \
   --transition-type any \
   --transition-duration 1
-SCRIPTEOF
+INNER_EOF
 
 install -m 755 "${TMP_SCRIPT}" "${RANDOMIZER_SCRIPT}"
 rm -f "${TMP_SCRIPT}"
@@ -111,18 +110,7 @@ if [[ "$(id -u)" -eq 0 ]]; then
   chown "${TARGET_USER}:${TARGET_USER}" "${RANDOMIZER_SCRIPT}"
 fi
 
-echo "Hooking wallpaper script into compositor configs when present..."
-
-if [[ -f "${NIRI_CONFIG}" ]]; then
-  if ! grep -Fq "${RANDOMIZER_SCRIPT}" "${NIRI_CONFIG}"; then
-    printf '\nspawn-at-startup "%s"\n' "${RANDOMIZER_SCRIPT}" >> "${NIRI_CONFIG}"
-    echo "Added startup hook to Niri config."
-  else
-    echo "Niri config already contains the wallpaper script."
-  fi
-else
-  echo "Niri config not found, skipping Niri hook."
-fi
+echo "Hooking wallpaper script into Hyprland config when present..."
 
 if [[ -f "${HYPR_CONFIG}" ]]; then
   if ! grep -Fq "${RANDOMIZER_SCRIPT}" "${HYPR_CONFIG}"; then
@@ -139,4 +127,4 @@ echo
 echo "Done."
 echo "Wallpaper repo: ${WALLPAPER_DIR}"
 echo "Randomizer script: ${RANDOMIZER_SCRIPT}"
-echo "A random wallpaper will be applied on startup in Niri/Hyprland when configured above."
+echo "A random wallpaper will be applied on startup in Hyprland when configured above."

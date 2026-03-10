@@ -33,7 +33,6 @@ main() {
     mullvad-vpn
     nano
     nextcloud-client
-    niri
     neovim
     openbsd-netcat
     pavucontrol
