@@ -6,6 +6,7 @@ set -euo pipefail
 # so searching for "console" opens Alacritty.
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
 else
   echo "Cannot read /etc/os-release"

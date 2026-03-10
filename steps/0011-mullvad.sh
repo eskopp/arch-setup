@@ -4,6 +4,7 @@ set -euo pipefail
 # Enable Mullvad daemon and configure keyd side buttons on Arch Linux.
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
 else
   echo "Cannot read /etc/os-release"

@@ -5,6 +5,7 @@ set -euo pipefail
 # This step is intentionally placed near the end of the setup flow.
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
 else
   echo "Cannot read /etc/os-release"

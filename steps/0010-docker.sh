@@ -7,6 +7,7 @@ set -euo pipefail
 # and enable the Docker service.
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
 else
   echo "Cannot read /etc/os-release"

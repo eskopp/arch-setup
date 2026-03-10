@@ -10,6 +10,7 @@ set -euo pipefail
 # - Package removal failures do not abort the whole step
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
 else
   echo "Cannot read /etc/os-release"

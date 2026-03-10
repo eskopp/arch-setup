@@ -4,6 +4,7 @@ set -euo pipefail
 # Install Yazi with useful extras plus Krita and GIMP on Arch Linux.
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
 else
   echo "Cannot read /etc/os-release"

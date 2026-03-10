@@ -11,6 +11,7 @@ is_nixos() {
   fi
 
   if [[ -r /etc/os-release ]]; then
+    # shellcheck disable=SC1091
     . /etc/os-release
     [[ "${ID:-}" == "nixos" ]] && return 0
   fi
@@ -29,6 +30,7 @@ fi
 echo "NixOS detected."
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck disable=SC1091
   . /etc/os-release
   echo "System     : ${PRETTY_NAME:-NixOS}"
 fi
