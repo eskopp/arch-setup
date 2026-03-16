@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=steps/_sudo.sh
+source "$SCRIPT_DIR/_sudo.sh"
+
 AUR_BUILD_ROOT="${AUR_BUILD_ROOT:-$HOME/.cache/arch-setup/aur}"
 
 msg() {
@@ -46,6 +50,7 @@ build_and_install_aur_pkg() {
 }
 
 main() {
+  require_sudo_session
   require_not_root
   ensure_dependencies
 

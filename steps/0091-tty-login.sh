@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=steps/_sudo.sh
+source "$SCRIPT_DIR/_sudo.sh"
+
 # Replace graphical login managers with the normal tty login on tty1
 # and install a custom /etc/issue header.
 #
@@ -27,7 +31,7 @@ if ! command -v sudo > /dev/null 2>&1; then
   exit 1
 fi
 
-sudo -v
+require_sudo_session
 
 echo "Disabling graphical display managers for future boots..."
 sudo systemctl disable gdm.service 2> /dev/null || true
