@@ -2,8 +2,7 @@ name: Mirror to GitLab
 
 on:
   push:
-    branches: ["**"]
-    tags: ["**"]
+    branches: ["main"]
   workflow_dispatch: {}
 
 permissions:

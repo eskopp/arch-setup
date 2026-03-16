@@ -83,8 +83,7 @@ arch-setup/
 ├── README.md
 ├── .github/
 │   └── workflows/
-│       ├── gitlab.yml
-│       └── shell-lint.yml
+│       └── gitlab.yml
 └── steps/
     ├── 0000-preflight.sh
     ├── 0001-base.sh
