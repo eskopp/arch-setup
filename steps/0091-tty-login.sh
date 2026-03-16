@@ -56,6 +56,16 @@ sudo rm -f /etc/systemd/system/display-manager.service || true
 
 echo "Ensuring normal tty login on tty1 is enabled..."
 sudo systemctl unmask getty@tty1.service 2> /dev/null || true
+
+echo "Configuring tty1 getty to clear old login output..."
+sudo install -d -m 0755 /etc/systemd/system/getty@tty1.service.d
+sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf > /dev/null << 'OVERRIDEEOF'
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -o '-p -- \\u' --issue-file /etc/issue %I $TERM
+OVERRIDEEOF
+
+sudo systemctl daemon-reload
 sudo systemctl enable getty@tty1.service
 
 echo "Writing custom /etc/issue..."
