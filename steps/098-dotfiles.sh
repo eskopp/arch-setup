@@ -52,7 +52,10 @@ echo "Ensuring dotfiles installer is executable..."
 chmod +x "${DOTFILES_INSTALL}"
 
 echo "Running dotfiles installer as '${TARGET_USER}'..."
-run_for_target env HOME="${TARGET_HOME}" bash -lc "cd '${DOTFILES_DIR}' && './install.sh'"
+run_for_target env \
+  HOME="${TARGET_HOME}" \
+  SCRIPT_DIR="${DOTFILES_DIR}" \
+  bash "${DOTFILES_INSTALL}"
 
 echo
 echo "Done."
