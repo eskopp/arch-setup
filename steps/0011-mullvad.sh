@@ -23,9 +23,11 @@ fi
 
 sudo -v
 
+echo "Installing Mullvad and keyd..."
+sudo pacman -S --needed --noconfirm mullvad-vpn keyd
+
 if ! systemctl list-unit-files | grep -q '^mullvad-daemon.service'; then
-  echo "mullvad-daemon.service was not found."
-  echo "Please install Mullvad first."
+  echo "mullvad-daemon.service was not found after installation."
   exit 1
 fi
 
@@ -33,8 +35,7 @@ echo "Enabling Mullvad daemon..."
 sudo systemctl enable mullvad-daemon.service
 
 if ! command -v keyd > /dev/null 2>&1; then
-  echo "keyd is not installed."
-  echo "Please install keyd first."
+  echo "keyd command not found after installation."
   exit 1
 fi
 
@@ -52,6 +53,11 @@ KEYDEOF
 
 echo "Checking keyd config..."
 sudo keyd check
+
+if ! systemctl is-active --quiet keyd; then
+  echo "Starting keyd daemon..."
+  sudo systemctl enable --now keyd
+fi
 
 echo "Reloading keyd..."
 sudo keyd reload
