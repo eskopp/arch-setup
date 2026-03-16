@@ -2,6 +2,9 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=steps/_sudo.sh
+source "$SCRIPT_DIR/_sudo.sh"
+
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 GITHUB_USER="${GITHUB_USER:-eskopp}"
@@ -129,6 +132,7 @@ sync_public_repos() {
 }
 
 main() {
+  require_sudo_session
   ensure_directories
   setup_shortcuts
   ensure_repo_dependencies

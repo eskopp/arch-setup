@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=steps/_sudo.sh
+source "$SCRIPT_DIR/_sudo.sh"
+
 # Install Docker packages on Arch Linux,
 # ensure the docker group exists,
 # add the current user to that group,
@@ -24,7 +28,7 @@ if ! command -v sudo > /dev/null 2>&1; then
   exit 1
 fi
 
-sudo -v
+require_sudo_session
 
 TARGET_USER="${SUDO_USER:-$USER}"
 

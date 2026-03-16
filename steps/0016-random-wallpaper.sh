@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=steps/_sudo.sh
+source "$SCRIPT_DIR/_sudo.sh"
+
 # Ensure wallpaper exists, create an swww random wallpaper helper,
 # and hook it into Hyprland startup when the config exists.
 
@@ -22,7 +26,7 @@ if ! command -v sudo > /dev/null 2>&1; then
   exit 1
 fi
 
-sudo -v
+require_sudo_session
 
 TARGET_USER="${SUDO_USER:-$USER}"
 TARGET_HOME="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"

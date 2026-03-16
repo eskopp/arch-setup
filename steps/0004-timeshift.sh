@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=steps/_sudo.sh
+source "$SCRIPT_DIR/_sudo.sh"
+
 msg() {
   printf '\033[1;34m[INFO]\033[0m %s\n' "$*"
 }
@@ -16,6 +20,7 @@ snapshot_exists() {
 }
 
 main() {
+  require_sudo_session
   local root_fstype root_subvol home_subvol root_uuid
   local initial_comment="initial btrfs snapshot with @home"
 
