@@ -58,9 +58,28 @@ KEYDEOF
 echo "Checking keyd config..."
 sudo keyd check
 
-if ! systemctl is-active --quiet keyd; then
+if ! systemctl is-enabled --quiet keyd.service; then
+  echo "Enabling keyd daemon..."
+  sudo systemctl enable keyd.service
+fi
+
+if ! systemctl is-active --quiet keyd.service; then
   echo "Starting keyd daemon..."
-  sudo systemctl enable --now keyd
+  sudo systemctl start keyd.service
+fi
+
+echo "Waiting for keyd socket..."
+for _ in {1..20}; do
+  if sudo test -S /var/run/keyd.socket; then
+    break
+  fi
+  sleep 0.2
+done
+
+if ! sudo test -S /var/run/keyd.socket; then
+  echo "keyd.socket did not become available after starting keyd."
+  sudo systemctl status --no-pager keyd.service || true
+  exit 1
 fi
 
 echo "Reloading keyd..."
