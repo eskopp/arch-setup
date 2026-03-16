@@ -14,5 +14,5 @@ require_sudo_session() {
     kill -0 "$$" > /dev/null 2>&1 || exit 0
   done 2> /dev/null &
   local sudo_keepalive_pid=$!
-  trap 'kill "${sudo_keepalive_pid}" >/dev/null 2>&1 || true' EXIT
+  trap 'kill "${sudo_keepalive_pid:-}" >/dev/null 2>&1 || true' EXIT
 }
