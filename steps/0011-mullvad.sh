@@ -1,12 +1,29 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
+
+trap 'echo "Error on line $LINENO"; exit 1' ERR
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # shellcheck source=steps/_sudo.sh
-source "$SCRIPT_DIR/_sudo.sh"
+if [[ -f "$SCRIPT_DIR/_sudo.sh" ]]; then
+  source "$SCRIPT_DIR/_sudo.sh"
+else
+  echo "Missing _sudo.sh in $SCRIPT_DIR"
+  exit 1
+fi
 
-# Enable Mullvad daemon and configure keyd side buttons on Arch Linux.
+log() {
+  echo "[INFO] $*"
+}
 
+warn() {
+  echo "[WARN] $*" >&2
+}
+
+# -------------------------
+# OS CHECK
+# -------------------------
 if [[ -r /etc/os-release ]]; then
   # shellcheck disable=SC1091
   . /etc/os-release
@@ -20,33 +37,45 @@ if [[ "${ID:-}" != "arch" ]]; then
   exit 1
 fi
 
-if ! command -v sudo > /dev/null 2>&1; then
+if ! command -v sudo >/dev/null 2>&1; then
   echo "sudo is required but not installed."
   exit 1
 fi
 
 require_sudo_session
 
-echo "Installing Mullvad and keyd..."
+# -------------------------
+# INSTALL
+# -------------------------
+log "Installing Mullvad and keyd..."
 sudo pacman -S --needed --noconfirm mullvad-vpn keyd
 
-if ! systemctl list-unit-files | grep -q '^mullvad-daemon.service'; then
-  echo "mullvad-daemon.service was not found after installation."
+# -------------------------
+# CHECK MULLVAD SERVICE
+# -------------------------
+if ! systemctl list-unit-files mullvad-daemon.service &>/dev/null; then
+  echo "mullvad-daemon.service not found after installation."
   exit 1
 fi
 
-echo "Enabling Mullvad daemon..."
+log "Enabling Mullvad daemon..."
 sudo systemctl enable mullvad-daemon.service
 
-if ! command -v keyd > /dev/null 2>&1; then
-  echo "keyd command not found after installation."
+# -------------------------
+# CHECK KEYD
+# -------------------------
+if ! command -v keyd >/dev/null 2>&1; then
+  echo "keyd not found after installation."
   exit 1
 fi
 
-echo "Writing keyd config for UGREEN side buttons..."
+# -------------------------
+# CONFIGURE KEYD
+# -------------------------
+log "Writing keyd config..."
 sudo mkdir -p /etc/keyd
 
-sudo tee /etc/keyd/ugreen-sidebuttons.conf > /dev/null << 'KEYDEOF'
+sudo tee /etc/keyd/ugreen-sidebuttons.conf >/dev/null << 'KEYDEOF'
 [ids]
 k:2b89:0043:595906dd
 
@@ -55,20 +84,32 @@ k:2b89:0043:595906dd
 ] = A-right
 KEYDEOF
 
-echo "Checking keyd config..."
-sudo keyd check
+# -------------------------
+# VALIDATE CONFIG
+# -------------------------
+log "Checking keyd config..."
+if ! sudo keyd check; then
+  echo "keyd config validation failed"
+  exit 1
+fi
 
-if ! systemctl is-enabled --quiet keyd.service; then
-  echo "Enabling keyd daemon..."
+# -------------------------
+# ENABLE + START KEYD
+# -------------------------
+if ! systemctl is-enabled --quiet keyd.service >/dev/null 2>&1; then
+  log "Enabling keyd daemon..."
   sudo systemctl enable keyd.service
 fi
 
-if ! systemctl is-active --quiet keyd.service; then
-  echo "Starting keyd daemon..."
+if ! systemctl is-active --quiet keyd.service >/dev/null 2>&1; then
+  log "Starting keyd daemon..."
   sudo systemctl start keyd.service
 fi
 
-echo "Waiting for keyd socket..."
+# -------------------------
+# WAIT FOR SOCKET
+# -------------------------
+log "Waiting for keyd socket..."
 for _ in {1..20}; do
   if sudo test -S /var/run/keyd.socket; then
     break
@@ -77,12 +118,15 @@ for _ in {1..20}; do
 done
 
 if ! sudo test -S /var/run/keyd.socket; then
-  echo "keyd.socket did not become available after starting keyd."
+  echo "keyd.socket did not become available"
   sudo systemctl status --no-pager keyd.service || true
   exit 1
 fi
 
-echo "Reloading keyd..."
+# -------------------------
+# RELOAD
+# -------------------------
+log "Reloading keyd..."
 sudo keyd reload
 
 echo

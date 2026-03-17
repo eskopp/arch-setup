@@ -107,7 +107,6 @@ arch-setup/
     ├── 0090-remove-gnome-and-niri.sh
     ├── 0091-tty-login.sh
     ├── 098-dotfiles.sh
-    └── 099-nixos-support.sh
 ~~~
 
 ## Notes
