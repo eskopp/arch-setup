@@ -53,6 +53,17 @@ main() {
 
   chmod 700 "$HOME/.ssh"
 
+  msg "Disabling intel_vbtn to avoid tablet mode disabling the internal keyboard"
+  sudo mkdir -p /etc/modprobe.d
+  cat > /tmp/disable-tablet-mode.conf <<'EOF'
+blacklist intel_vbtn
+EOF
+  sudo install -m 644 /tmp/disable-tablet-mode.conf /etc/modprobe.d/disable-tablet-mode.conf
+  rm -f /tmp/disable-tablet-mode.conf
+
+  msg "Rebuilding initramfs"
+  sudo mkinitcpio -P
+
   msg "0001 base setup completed"
 }
 
