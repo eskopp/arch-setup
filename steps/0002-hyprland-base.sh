@@ -36,11 +36,19 @@ main() {
   target_home="$(getent passwd "${target_user}" | cut -d: -f6)"
   [[ -n "${target_home}" && -d "${target_home}" ]] || die "Could not determine home directory for ${target_user}."
 
+  msg "Stopping old iwd service when present"
+  sudo systemctl disable --now iwd.service 2> /dev/null || true
+
+  msg "Removing iwd when it is installed"
+  if pacman -Q iwd > /dev/null 2>&1; then
+    sudo pacman -Rns --noconfirm iwd
+  fi
+
   msg "Installing base desktop packages for a Hyprland system"
   sudo pacman -S --needed --noconfirm networkmanager firefox xdg-utils
 
   msg "Enabling NetworkManager"
-  sudo systemctl enable NetworkManager.service
+  sudo systemctl enable --now NetworkManager.service
 
   msg "Configuring lid close behavior"
   sudo install -d -m 0755 /etc/systemd/logind.conf.d
