@@ -58,8 +58,15 @@ if ! systemctl list-unit-files mullvad-daemon.service &>/dev/null; then
   exit 1
 fi
 
-log "Enabling Mullvad daemon..."
-sudo systemctl enable mullvad-daemon.service
+log "Enabling and starting Mullvad daemon..."
+sudo systemctl enable --now mullvad-daemon.service
+
+log "Verifying Mullvad daemon state..."
+if ! systemctl is-active --quiet mullvad-daemon.service; then
+  echo "mullvad-daemon.service is not active after startup."
+  sudo systemctl status --no-pager mullvad-daemon.service || true
+  exit 1
+fi
 
 # -------------------------
 # CHECK KEYD
