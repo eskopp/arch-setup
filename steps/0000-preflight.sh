@@ -17,6 +17,7 @@ die() {
 main() {
   local target_user target_home root_fstype root_opts home_opts
   local root_subvol="" home_subvol=""
+  local wp_conf_dir wp_conf_file
 
   [[ -f /etc/arch-release ]] || die "This setup only supports Arch Linux."
   [[ "${EUID}" -ne 0 ]] || die "Run this setup as a normal user, not as root."
@@ -76,6 +77,32 @@ main() {
 
   msg "Disk usage for /"
   df -h / | sed -n '1,2p'
+
+  msg "Writing WirePlumber rule to disable HDMI audio sinks"
+  wp_conf_dir="${target_home}/.config/wireplumber/wireplumber.conf.d"
+  wp_conf_file="${wp_conf_dir}/52-disable-hdmi-audio.conf"
+
+  mkdir -p "${wp_conf_dir}"
+
+  cat > "${wp_conf_file}" <<'EOF'
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        node.name = "~alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__HDMI.*__sink"
+      }
+    ]
+    actions = {
+      update-props = {
+        node.disabled = true
+      }
+    }
+  }
+]
+EOF
+
+  msg "WirePlumber HDMI audio disable rule written to ${wp_conf_file}"
+  warn "The new WirePlumber rule will only apply after re-login or after restarting the user audio services."
 
   msg "0000 preflight completed"
 }
