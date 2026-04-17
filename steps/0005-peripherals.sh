@@ -9,14 +9,8 @@ msg() {
   printf '\033[1;34m[INFO]\033[0m %s\n' "$*"
 }
 
-snapshot_exists() {
-  local comment="$1"
-  sudo timeshift --list 2> /dev/null | grep -Fq "$comment"
-}
-
 main() {
   require_sudo_session
-  local snapshot_comment="after step 0005 peripherals setup"
 
   msg "Installing Bluetooth, printer, scanner, and audio packages"
   sudo pacman -S --needed --noconfirm \
@@ -58,17 +52,6 @@ main() {
   systemctl --user enable --now pipewire.socket
   systemctl --user enable --now pipewire-pulse.socket
   systemctl --user enable --now wireplumber.service
-
-  if command -v timeshift > /dev/null 2>&1; then
-    if snapshot_exists "$snapshot_comment"; then
-      msg "Peripherals snapshot already exists, skipping creation"
-    else
-      msg "Creating Timeshift snapshot after step 0005"
-      sudo timeshift --create --comments "$snapshot_comment" --tags O
-    fi
-  else
-    msg "Timeshift is not installed yet, skipping snapshot creation"
-  fi
 
   msg "0005 peripherals setup completed"
 }

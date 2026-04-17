@@ -88,7 +88,6 @@ arch-setup/
     ├── 0000-preflight.sh
     ├── 0001-base.sh
     ├── 0002-hyprland-base.sh
-    ├── 0004-timeshift.sh
     ├── 0005-peripherals.sh
     ├── 0006-cloud-and-repos.sh
     ├── 0007-pacman-initramfs-hook.sh
