@@ -95,7 +95,6 @@ arch-setup/
     ├── 0009-cli-apps.sh
     ├── 0010-docker.sh
     ├── 0011-mullvad.sh
-    ├── 0012-alacritty.sh
     ├── 0013-desktop-apps.sh
     ├── 0014-dev-languages.sh
     ├── 0015-communication-apps.sh
