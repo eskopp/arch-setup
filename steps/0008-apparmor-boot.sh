@@ -50,13 +50,15 @@ normalize_options_line() {
   if [[ "$options" =~ (^|[[:space:]])lsm=([^[:space:]]+) ]]; then
     old_lsm="${BASH_REMATCH[2]}"
     new_lsm="$old_lsm"
+    new_lsm="$(append_unique_csv "$new_lsm" "landlock")"
     new_lsm="$(append_unique_csv "$new_lsm" "lockdown")"
     new_lsm="$(append_unique_csv "$new_lsm" "yama")"
     new_lsm="$(append_unique_csv "$new_lsm" "integrity")"
     new_lsm="$(append_unique_csv "$new_lsm" "apparmor")"
+    new_lsm="$(append_unique_csv "$new_lsm" "bpf")"
     options="$(sed -E "s@(^|[[:space:]])lsm=[^[:space:]]+@ lsm=${new_lsm}@g" <<<"$options")"
   else
-    options="$options lsm=lockdown,yama,integrity,apparmor"
+    options="$options lsm=landlock,lockdown,yama,integrity,apparmor,bpf"
   fi
 
   options="$(xargs <<<"$options")"
